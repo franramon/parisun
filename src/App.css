@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap');
+
+:root {
+  --amber: #E8A020;
+  --amber-light: #F5C84C;
+  --amber-pale: #FFF3D6;
+  --amber-dark: #B87A10;
+  --bg: #FEFCF7;
+  --text: #2C2416;
+  --text-light: #7A6B55;
+  --card: #FFFFFF;
+  --shadow: rgba(44, 36, 22, 0.08);
+  --radius: 12px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.status-bar {
+  padding: 8px 24px;
+  background: var(--text);
+  color: rgba(255,255,255,0.7);
+  font-size: 11px;
+  display: flex;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.status-bar strong {
+  color: var(--amber-light);
+}
+
+@media (max-width: 768px) {
+  .status-bar {
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 16px;
+  }
+}
