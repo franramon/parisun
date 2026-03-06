@@ -20,7 +20,7 @@ export async function loadShadowData(onProgress = null) {
     return shadowDataPromise;
   }
 
-  shadowDataPromise = fetch('/shadow-data_V2.json')
+  shadowDataPromise = fetch('/shadow-data_V3.json')
     .then(async response => {
       if (!response.ok) {
         throw new Error('Shadow data not found');
@@ -48,7 +48,6 @@ export async function loadShadowData(onProgress = null) {
           }
         }
 
-        // Combine chunks and parse
         const blob = new Blob(chunks);
         const text = await blob.text();
         return JSON.parse(text);
@@ -57,8 +56,24 @@ export async function loadShadowData(onProgress = null) {
       return response.json();
     })
     .then(data => {
+      // Decode V3 compact format: base64 uint8 (0-5) -> shadow matrix (0-100)
+      const nAlt = data.altitudes.length;
+      const nAz = data.azimuths.length;
+      data.terraces = data.terraces.map(t => {
+        const bytes = Uint8Array.from(atob(t.s), c => c.charCodeAt(0));
+        const shadows = [];
+        for (let a = 0; a < nAlt; a++) {
+          const row = [];
+          for (let z = 0; z < nAz; z++) {
+            row.push(bytes[a * nAz + z] * 20);
+          }
+          shadows.push(row);
+        }
+        return { id: t.id, shadows };
+      });
+
       shadowData = data;
-      console.log(`✓ Loaded pre-computed shadow data for ${data.terraces.length} terraces`);
+      console.log(`✓ Loaded shadow data for ${data.terraces.length} terraces`);
       if (onProgress) onProgress(100);
       return data;
     })
