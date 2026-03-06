@@ -11,6 +11,12 @@ import './App.css';
 const PARIS_LAT = 48.8566;
 const PARIS_LNG = 2.3522;
 
+const formatHour = (hour) => {
+  const h = Math.floor(hour);
+  const m = Math.round((hour - h) * 60);
+  return m > 0 ? `${h}h${String(m).padStart(2, '0')}` : `${h}h`;
+};
+
 function WeatherBanner({ sunPosition, weatherInfo }) {
   const [dismissed, setDismissed] = useState(false);
 
@@ -308,6 +314,42 @@ function App() {
           listOpen={listOpen}
           onListClose={() => setListOpen(false)}
         />
+
+        {/* Mobile bottom controls bar */}
+        <div className="mobile-controls">
+          <input
+            type="date"
+            className="date-input"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+          />
+          <div className="hour-control">
+            <input
+              type="range"
+              className="hour-slider"
+              min="6" max="22" step="0.25"
+              value={selectedHour}
+              onChange={(e) => setSelectedHour(parseFloat(e.target.value))}
+            />
+            <div className="hour-display">{formatHour(selectedHour)}</div>
+          </div>
+          <button
+            className={`filter-chip sunny ${sunFilters.has('sunny') ? 'active' : ''}`}
+            onClick={() => {
+              const s = new Set(sunFilters);
+              s.has('sunny') ? s.delete('sunny') : s.add('sunny');
+              setSunFilters(s);
+            }}
+          >☀️</button>
+          <button
+            className={`filter-chip shaded ${sunFilters.has('shaded') ? 'active' : ''}`}
+            onClick={() => {
+              const s = new Set(sunFilters);
+              s.has('shaded') ? s.delete('shaded') : s.add('shaded');
+              setSunFilters(s);
+            }}
+          >🌑</button>
+        </div>
 
         {/* Mobile FAB — toggle list */}
         <button

@@ -173,34 +173,22 @@
 @media (max-width: 768px) {
   .header {
     padding: 10px 14px;
-    gap: 10px;
+    gap: 12px;
     flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
   }
 
-  .header::-webkit-scrollbar {
+  /* Hide everything except logo and weather on mobile */
+  .search-wrap,
+  .time-controls {
     display: none;
+  }
+
+  /* Push weather to the right */
+  .logo {
+    flex: 1;
   }
 
   .logo h1 {
-    font-size: 16px;
-  }
-
-  .search-wrap {
-    display: none;
-  }
-
-  .hour-display {
-    font-size: 22px;
-    min-width: 46px;
-  }
-
-  .hour-slider {
-    width: 90px;
-  }
-
-  .weather-indicator span:last-child {
-    display: none;
+    font-size: 17px;
   }
 }

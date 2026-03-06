@@ -41,10 +41,12 @@ body {
 }
 
 .status-bar {
-  padding: 10px 28px;
-  background: linear-gradient(to right, #2C2416, #3d3020);
-  border-top: 1px solid rgba(232, 160, 32, 0.2);
-  color: rgba(255, 243, 214, 0.6);
+  padding: 8px 28px;
+  background: rgba(255, 243, 214, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(232, 160, 32, 0.25);
+  color: var(--text-light);
   font-family: 'DM Serif Display', serif;
   font-size: 12px;
   letter-spacing: 0.02em;
@@ -55,11 +57,15 @@ body {
 }
 
 .status-bar strong {
-  color: var(--amber-light);
+  color: var(--amber-dark);
   font-weight: 400;
 }
 
-/* FAB — mobile only */
+/* Mobile controls bar + FAB — hidden on desktop */
+.mobile-controls {
+  display: none;
+}
+
 .fab-list {
   display: none;
 }
@@ -69,6 +75,68 @@ body {
     display: none;
   }
 
+  /* Bottom controls bar: date + slider + filtres */
+  .mobile-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 10px 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    white-space: nowrap;
+  }
+
+  .mobile-controls .date-input {
+    font-size: 12px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+  }
+
+  .mobile-controls .hour-control {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .mobile-controls .hour-slider {
+    width: 80px;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(to right, #D4A040, var(--amber), #D4A040);
+    border-radius: 2px;
+    outline: none;
+  }
+
+  .mobile-controls .hour-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--amber);
+    border: 2px solid white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  }
+
+  .mobile-controls .hour-display {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--amber-dark);
+    min-width: 40px;
+  }
+
+  /* FAB toggle list */
   .fab-list {
     display: flex;
     align-items: center;
@@ -78,20 +146,24 @@ body {
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
-    background: var(--text);
-    color: var(--amber-light);
+    background: rgba(255, 243, 214, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--amber-dark);
     font-family: 'DM Serif Display', serif;
     font-size: 15px;
+    font-weight: 500;
     padding: 12px 28px;
     border-radius: 40px;
-    border: none;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    border: 1px solid rgba(232, 160, 32, 0.3);
+    box-shadow: 0 4px 20px rgba(44, 36, 22, 0.18);
     cursor: pointer;
     white-space: nowrap;
-    transition: background 0.2s;
+    transition: background 0.2s, box-shadow 0.2s;
   }
 
   .fab-list:active {
-    background: var(--amber-dark);
+    background: rgba(245, 200, 76, 0.95);
+    box-shadow: 0 2px 10px rgba(44, 36, 22, 0.25);
   }
 }

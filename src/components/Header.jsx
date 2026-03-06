@@ -59,6 +59,13 @@ function Header({
         />
       </div>
 
+      {weatherInfo && (
+        <div className="weather-indicator">
+          <span className="weather-icon">{weatherInfo.icon}</span>
+          <span className="weather-label">{weatherInfo.label} · {Math.round(weatherInfo.temperature)}°C</span>
+        </div>
+      )}
+
       <div className="time-controls">
         <input
           type="date"
@@ -79,13 +86,6 @@ function Header({
           />
           <div className="hour-display">{formatHour(selectedHour)}</div>
         </div>
-
-        {weatherInfo && (
-          <div className="weather-indicator">
-            <span className="weather-icon">{weatherInfo.icon}</span>
-            <span>{weatherInfo.label} · {Math.round(weatherInfo.temperature)}°C</span>
-          </div>
-        )}
 
         <SunFilter
           activeFilters={sunFilters}
