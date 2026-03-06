@@ -29,14 +29,14 @@ export async function loadLocalTerraces(onProgress = null) {
       const props = feature.properties || {};
       const [lng, lat] = feature.geometry.coordinates;
 
-      // Filter out closed terraces (fermée)
+      // Filter out closed terraces and étalages (display stands, not seating terraces)
       const typologie = props.typologie || '';
-      if (typologie.toLowerCase().includes('fermée') || typologie.toLowerCase().includes('fermee')) {
-        continue;
-      }
+      const typLower = typologie.toLowerCase();
+      if (typLower.includes('fermée') || typLower.includes('fermee')) continue;
+      if (typLower.includes('étalage') || typLower.includes('etalage')) continue;
 
       terraces.push({
-        id: index, // Original index for shadow data lookup
+        id: index, // GeoJSON feature index = shadow data id
         name: props.nom_enseigne || props.nom_commerce || 'Sans nom',
         address: props.adresse || '',
         arrondissement: props.arrondissement || '',

@@ -20,7 +20,7 @@ export async function loadShadowData(onProgress = null) {
     return shadowDataPromise;
   }
 
-  shadowDataPromise = fetch('/shadow-data.json')
+  shadowDataPromise = fetch('/shadow-data_V2.json')
     .then(async response => {
       if (!response.ok) {
         throw new Error('Shadow data not found');

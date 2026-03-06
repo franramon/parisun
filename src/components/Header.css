@@ -172,18 +172,35 @@
 
 @media (max-width: 768px) {
   .header {
-    flex-wrap: wrap;
-    padding: 12px 16px;
+    padding: 10px 14px;
     gap: 10px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .header::-webkit-scrollbar {
+    display: none;
+  }
+
+  .logo h1 {
+    font-size: 16px;
   }
 
   .search-wrap {
-    max-width: none;
-    order: 10;
-    width: 100%;
+    display: none;
+  }
+
+  .hour-display {
+    font-size: 22px;
+    min-width: 46px;
   }
 
   .hour-slider {
-    width: 100px;
+    width: 90px;
+  }
+
+  .weather-indicator span:last-child {
+    display: none;
   }
 }

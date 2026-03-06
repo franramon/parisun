@@ -1,16 +1,38 @@
-# React + Vite
+# Parisun
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Trouvez une terrasse ensoleillée à Paris, maintenant.
 
-Currently, two official plugins are available:
+**Parisun** croise la position du soleil en temps réel, les données de bâtiments IGN BD TOPO et les ~19 000 terrasses autorisées de Paris pour vous dire, terrasse par terrasse, si elle est au soleil ou à l'ombre — à l'heure que vous choisissez.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Fonctionnalités
 
-## React Compiler
+- **Carte interactive** des terrasses parisiennes, colorées selon l'ensoleillement (orange = soleil, gris = ombre)
+- **Calcul d'ombres précis** par lancer de rayons sur les bâtiments réels (IGN BD TOPO), pré-calculé pour chaque azimut/altitude solaire
+- **Curseur date/heure** : simulez l'ensoleillement à n'importe quel moment de la journée ou de la semaine
+- **Météo en temps réel** via Open-Meteo : le widget s'adapte (pluie, nuages, nuit)
+- **Filtrage par zone** : la liste de droite se synchronise avec la vue de la carte
+- **Recherche** par nom, adresse ou arrondissement
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Sources de données
 
-## Expanding the ESLint configuration
+| Données | Source |
+|---|---|
+| Terrasses autorisées | [opendata.paris.fr](https://opendata.paris.fr) |
+| Bâtiments & hauteurs | IGN BD TOPO |
+| Météo | [Open-Meteo](https://open-meteo.com) |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Stack
+
+- **React** + **Vite**
+- **Leaflet** pour la carte
+- **SunCalc** pour la position solaire
+- Python (NumPy, SciPy) pour le pré-calcul des ombres
+
+## Lancer en local
+
+```bash
+npm install
+npm run dev
+```
+
+Requiert les fichiers `public/terraces-data.geojson` et `public/shadow-data_V2.json` (pré-calculé via `scripts/compute_shadows_V2.py`).

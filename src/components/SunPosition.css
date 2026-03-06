@@ -1,103 +1,103 @@
 .sun-position {
-  background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%);
   border-radius: 12px;
   padding: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 16px;
+  margin: 0 16px 16px 16px;
+  transition: background 0.6s ease;
 }
 
 .sun-position-header {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 4px;
   font-weight: 500;
 }
 
 .sun-icon {
-  font-size: 24px;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.sun-status-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .sun-status {
   font-size: 14px;
-  color: #2c3e50;
+  font-weight: 600;
+  color: #1a3a50;
 }
 
+.sun-weather-detail {
+  font-size: 11px;
+  color: #4a6a80;
+  font-weight: 400;
+}
+
+/* Night text colors */
+.theme-night .sun-status { color: #C8D8E8; }
+.theme-night .sun-weather-detail { color: #7fa8cc; }
+
+/* Bad weather text colors */
+.theme-bad .sun-status { color: #2d3e47; }
+.theme-bad .sun-weather-detail { color: #546E7A; }
+
 .sun-dome {
-  margin: 16px 0;
+  margin: 12px 0 8px;
   display: flex;
   justify-content: center;
 }
 
 .dome-svg {
-  width: 160px;
-  height: 160px;
+  width: 150px;
+  height: 150px;
 }
 
-.horizon-circle {
-  fill: rgba(255, 255, 255, 0.3);
-  stroke: #3498db;
-  stroke-width: 1.5;
+/* Glowing sun (clear weather) */
+.sun-dot-glow {
+  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.9));
 }
 
-.altitude-circle {
-  fill: none;
-  stroke: #3498db;
-  stroke-width: 0.5;
+/* Muted sun (bad weather) */
+.sun-dot-muted {
+  filter: drop-shadow(0 0 2px rgba(144, 164, 174, 0.5));
 }
 
-.cardinal-label {
-  font-size: 10px;
-  font-weight: bold;
-  fill: #2c3e50;
+/* Rain animation */
+@keyframes rain-fall {
+  0%   { transform: translateY(-6px); opacity: 0; }
+  30%  { opacity: 1; }
+  100% { transform: translateY(10px); opacity: 0; }
 }
 
-.sun-dot {
-  filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.8));
-}
-
-.sun-ray {
-  stroke-dasharray: 2, 2;
+.raindrop {
+  animation: rain-fall 1.2s linear infinite;
 }
 
 .sun-details {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(52, 152, 219, 0.2);
-}
-
-.sun-details.night {
-  text-align: center;
-  color: #555;
-  font-style: italic;
-  padding: 8px;
+  gap: 6px;
+  padding-top: 10px;
+  border-top: 1px solid;
+  transition: border-color 0.6s ease;
 }
 
 .sun-detail-item {
   display: flex;
   justify-content: space-between;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .detail-label {
-  color: #555;
   font-weight: 500;
+  transition: color 0.6s ease;
 }
 
 .detail-value {
-  color: #2c3e50;
   font-weight: 600;
-}
-
-/* Night mode styling */
-.sun-position.night {
-  background: linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%);
-}
-
-.sun-position.night .sun-status,
-.sun-position.night .detail-label,
-.sun-position.night .detail-value {
-  color: #e0e0e0;
+  transition: color 0.6s ease;
 }

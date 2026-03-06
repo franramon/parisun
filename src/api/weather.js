@@ -1,16 +1,18 @@
-const WEATHER_API_URL = 'https://api.open-meteo.com/v1/forecast';
+const FORECAST_API_URL = 'https://api.open-meteo.com/v1/forecast';
+const ARCHIVE_API_URL = 'https://archive-api.open-meteo.com/v1/archive';
 
 // Paris coordinates
 const PARIS_LAT = 48.8566;
 const PARIS_LNG = 2.3522;
 
 /**
- * Fetch weather forecast for Paris
+ * Fetch weather for Paris — forecast (±7 days) + archive fallback for past dates
  * @returns {Promise<Object>} - Weather data with hourly forecast
  */
 export async function fetchWeatherForecast() {
   try {
-    const url = `${WEATHER_API_URL}?latitude=${PARIS_LAT}&longitude=${PARIS_LNG}&hourly=temperature_2m,weather_code,cloud_cover&timezone=Europe/Paris&forecast_days=7`;
+    // Forecast covers today -2 days to +7 days
+    const url = `${FORECAST_API_URL}?latitude=${PARIS_LAT}&longitude=${PARIS_LNG}&hourly=temperature_2m,weather_code,cloud_cover&timezone=Europe/Paris&forecast_days=7&past_days=2`;
 
     const response = await fetch(url);
 
@@ -25,6 +27,28 @@ export async function fetchWeatherForecast() {
   } catch (error) {
     console.error('Error fetching weather:', error);
     throw error;
+  }
+}
+
+/**
+ * Fetch historical weather for a specific past date
+ * @param {string} dateStr - Date string (YYYY-MM-DD)
+ * @returns {Promise<Object>} - Weather data with hourly values
+ */
+export async function fetchArchiveWeather(dateStr) {
+  try {
+    const url = `${ARCHIVE_API_URL}?latitude=${PARIS_LAT}&longitude=${PARIS_LNG}&hourly=temperature_2m,weather_code,cloud_cover&timezone=Europe/Paris&start_date=${dateStr}&end_date=${dateStr}`;
+
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Archive API failed: ${response.status}`);
+
+    const data = await response.json();
+    console.log(`✓ Archive weather loaded for ${dateStr}`);
+    return data;
+
+  } catch (error) {
+    console.error('Error fetching archive weather:', error);
+    return null;
   }
 }
 

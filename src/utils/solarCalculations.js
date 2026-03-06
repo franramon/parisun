@@ -79,9 +79,12 @@ export function calculateSunScore(sun, terrace, weatherFactor = 0.8) {
   // Clamp score
   score = Math.min(1, Math.max(0, score));
 
-  // Determine label and class - simplified to 2 categories
+  // Determine label and class based on shadow factor (building shadow),
+  // not the combined score (which also depends on sun altitude).
+  // shadowFactor=1 means no building shadow, shadowFactor=0 means full shadow.
   let label, className;
-  if (score > 0.5) {
+  const shadowFactor = terrace.shadowFactor !== undefined ? terrace.shadowFactor : 1.0;
+  if (shadowFactor >= 0.5) {
     label = 'Ensoleillé';
     className = 'sunny';
   } else {

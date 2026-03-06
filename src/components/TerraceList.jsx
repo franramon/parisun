@@ -2,7 +2,7 @@ import SunFilter from './SunFilter';
 import SunPosition from './SunPosition';
 import './TerraceList.css';
 
-function TerraceList({ terraces, onTerraceClick, selectedTerrace, loading, loadingProgress, loadingStage, sunFilters, onFiltersChange, terraceCounts, sunPosition }) {
+function TerraceList({ terraces, onTerraceClick, selectedTerrace, loading, loadingProgress, loadingStage, sunFilters, onFiltersChange, terraceCounts, sunPosition, weatherInfo, inView, listOpen, onListClose }) {
   if (loading) {
     const percentage = typeof loadingProgress === 'number'
       ? loadingProgress
@@ -48,12 +48,14 @@ function TerraceList({ terraces, onTerraceClick, selectedTerrace, loading, loadi
   };
 
   return (
-    <div className="sidebar">
+    <div className={`sidebar${listOpen ? ' open' : ''}`}>
       <div className="sidebar-header">
         <h2>Terrasses</h2>
-        <span>{terraces.length} terrasses</span>
+        <span>
+          {inView ? `${terraces.length} dans la zone` : `${terraces.length} terrasses`}
+        </span>
       </div>
-      <SunPosition sunPosition={sunPosition} />
+      <SunPosition sunPosition={sunPosition} weatherInfo={weatherInfo} />
       <SunFilter
         activeFilters={sunFilters}
         onChange={onFiltersChange}

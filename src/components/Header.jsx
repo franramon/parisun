@@ -80,10 +80,6 @@ function Header({
           <div className="hour-display">{formatHour(selectedHour)}</div>
         </div>
 
-        <div className="sun-indicator">
-          <span>{sunPosition.altitude > 0 ? `${sunPosition.altitude.toFixed(1)}°` : 'nuit'}</span>
-        </div>
-
         {weatherInfo && (
           <div className="weather-indicator">
             <span className="weather-icon">{weatherInfo.icon}</span>
