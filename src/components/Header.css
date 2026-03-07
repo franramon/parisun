@@ -33,7 +33,7 @@
   font-family: 'DM Serif Display', serif;
   font-size: 20px;
   font-weight: 400;
-  color: var(--text);
+  color: var(--amber);
   white-space: nowrap;
   margin: 0;
 }
@@ -177,10 +177,27 @@
     flex-wrap: nowrap;
   }
 
-  /* Hide everything except logo and weather on mobile */
-  .search-wrap,
+  /* Hide time controls on mobile */
   .time-controls {
     display: none;
+  }
+
+  /* Search bar: floating below header */
+  .search-wrap {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100vw - 32px);
+    max-width: 400px;
+    z-index: 999;
+  }
+
+  .search-wrap input {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 16px rgba(44, 36, 22, 0.15);
+    border: 1px solid rgba(232, 160, 32, 0.25);
   }
 
   /* Push weather to the right */

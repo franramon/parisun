@@ -6,6 +6,12 @@
   transition: background 0.6s ease;
 }
 
+@media (max-width: 768px) {
+  .sun-position {
+    display: none;
+  }
+}
+
 .sun-position-header {
   display: flex;
   align-items: center;

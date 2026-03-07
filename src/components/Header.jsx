@@ -31,17 +31,7 @@ function Header({
   return (
     <header className="header">
       <div className="logo">
-        <svg viewBox="0 0 32 32" fill="none" width="32" height="32">
-          {/* Martini glass */}
-          <polygon points="6,4 26,4 16,18" fill="#A8D8F0" stroke="#5BAED6" strokeWidth="1.2" strokeLinejoin="round"/>
-          <line x1="16" y1="18" x2="16" y2="27" stroke="#5BAED6" strokeWidth="1.8" strokeLinecap="round"/>
-          <line x1="11" y1="27" x2="21" y2="27" stroke="#5BAED6" strokeWidth="2" strokeLinecap="round"/>
-          {/* Olive */}
-          <circle cx="16" cy="10" r="2.2" fill="#7CB87A" stroke="#4A8A48" strokeWidth="0.8"/>
-          <circle cx="16" cy="10" r="0.8" fill="#D44"/>
-          {/* Cocktail stick */}
-          <line x1="10" y1="6" x2="22" y2="14" stroke="#C8A050" strokeWidth="1" strokeLinecap="round"/>
-        </svg>
+        <img src="/cocktail_cropped.png" alt="logo" width="32" height="32" style={{ objectFit: 'contain' }} />
         <h1>Un verre au soleil ?</h1>
       </div>
 

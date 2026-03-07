@@ -17,15 +17,13 @@ const formatHour = (hour) => {
   return m > 0 ? `${h}h${String(m).padStart(2, '0')}` : `${h}h`;
 };
 
-function WeatherBanner({ sunPosition, weatherInfo }) {
+function WeatherModal({ sunPosition, weatherInfo }) {
   const [dismissed, setDismissed] = useState(false);
 
-  // Reset dismiss when conditions change
   const key = `${sunPosition.altitude < 0}-${weatherInfo?.sunny}`;
   const prevKey = useRef(key);
   if (prevKey.current !== key) {
     prevKey.current = key;
-    // conditions changed — show again
     if (dismissed) setDismissed(false);
   }
 
@@ -33,29 +31,22 @@ function WeatherBanner({ sunPosition, weatherInfo }) {
 
   let message = null;
   if (sunPosition.altitude <= 0) {
-    message = { icon: '🌙', text: 'Le soleil est couché — revenez demain pour trouver votre terrasse ensoleillée !' };
+    message = { icon: '🌙', title: 'Soleil couché', text: 'Revenez demain pour trouver votre terrasse ensoleillée !' };
   } else if (weatherInfo && !weatherInfo.sunny) {
-    message = { icon: weatherInfo.icon, text: `${weatherInfo.label} sur Paris en ce moment — les terrasses sont là, mais prévoyez un imperméable !` };
+    message = { icon: weatherInfo.icon, title: weatherInfo.label, text: 'Les terrasses sont là, mais prévoyez un imperméable !' };
   }
 
   if (!message) return null;
 
   return (
-    <div style={{
-      position: 'absolute', top: 16, left: '50%', transform: 'translateX(-50%)',
-      zIndex: 900, display: 'flex', alignItems: 'flex-start', gap: 10,
-      background: 'rgba(44, 36, 22, 0.88)', backdropFilter: 'blur(8px)',
-      color: '#FFF3D6', borderRadius: 16, padding: '12px 16px 12px 14px',
-      boxShadow: '0 4px 20px rgba(0,0,0,0.2)', fontSize: 13, fontWeight: 500,
-      maxWidth: 380, width: 'calc(100vw - 48px)',
-    }}>
-      <span style={{ fontSize: 18, flexShrink: 0, marginTop: 1 }}>{message.icon}</span>
-      <span style={{ flex: 1, lineHeight: 1.5 }}>{message.text}</span>
-      <button onClick={() => setDismissed(true)} style={{
-        background: 'none', border: 'none', color: 'rgba(255,243,214,0.5)',
-        cursor: 'pointer', fontSize: 16, padding: '0 0 0 8px', lineHeight: 1,
-        flexShrink: 0,
-      }}>✕</button>
+    <div className="weather-modal-overlay" onClick={() => setDismissed(true)}>
+      <div className="weather-modal" onClick={(e) => e.stopPropagation()}>
+        <button className="weather-modal-close" onClick={() => setDismissed(true)}>✕</button>
+        <div className="weather-modal-icon">{message.icon}</div>
+        <div className="weather-modal-title">{message.title}</div>
+        <div className="weather-modal-text">{message.text}</div>
+        <button className="weather-modal-btn" onClick={() => setDismissed(true)}>Compris !</button>
+      </div>
     </div>
   );
 }
@@ -288,7 +279,7 @@ function App() {
       />
 
       <main className="main">
-        <WeatherBanner sunPosition={sunPosition} weatherInfo={weatherInfo} />
+        <WeatherModal sunPosition={sunPosition} weatherInfo={weatherInfo} />
         <Map
           terraces={filteredTerraces}
           onTerraceClick={(t) => { setSelectedTerrace(t); setListOpen(false); }}
@@ -313,10 +304,15 @@ function App() {
           inView={terracesInView !== null}
           listOpen={listOpen}
           onListClose={() => setListOpen(false)}
+          selectedDate={selectedDate}
+          selectedHour={selectedHour}
+          onDateChange={setSelectedDate}
+          onHourChange={setSelectedHour}
         />
 
-        {/* Mobile bottom controls bar */}
-        <div className="mobile-controls">
+
+        {/* Mobile floating time controls — hidden when list is open */}
+        <div className={`mobile-time-controls${listOpen ? ' hidden' : ''}`}>
           <input
             type="date"
             className="date-input"
@@ -333,33 +329,20 @@ function App() {
             />
             <div className="hour-display">{formatHour(selectedHour)}</div>
           </div>
-          <button
-            className={`filter-chip sunny ${sunFilters.has('sunny') ? 'active' : ''}`}
-            onClick={() => {
-              const s = new Set(sunFilters);
-              s.has('sunny') ? s.delete('sunny') : s.add('sunny');
-              setSunFilters(s);
-            }}
-          >☀️</button>
-          <button
-            className={`filter-chip shaded ${sunFilters.has('shaded') ? 'active' : ''}`}
-            onClick={() => {
-              const s = new Set(sunFilters);
-              s.has('shaded') ? s.delete('shaded') : s.add('shaded');
-              setSunFilters(s);
-            }}
-          >🌑</button>
         </div>
 
-        {/* Mobile FAB — toggle list */}
+      </main>
+
+      {/* Mobile FAB — hidden when list is open */}
+      {!listOpen && (
         <button
           className="fab-list"
-          onClick={() => setListOpen(o => !o)}
+          onClick={() => setListOpen(true)}
           aria-label="Afficher la liste"
         >
-          {listOpen ? '✕' : `Liste · ${(terracesInView ?? filteredTerraces).length}`}
+          {`Voir les ${(terracesInView ?? filteredTerraces).length} terrasses`}
         </button>
-      </main>
+      )}
 
       <footer className="status-bar">
         <span>Terrasses : <strong>opendata.paris.fr</strong></span>

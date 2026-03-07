@@ -7,8 +7,7 @@ const MAX_MARKERS = 500;
 
 function makeIcons(isNight, isBadWeather) {
   const dull = isNight || isBadWeather;
-  // Normal: orange (sunny) / grey (shaded)
-  // Bad conditions: all points become muted blue-grey
+
   const colors = dull
     ? { sunny: '#7B9BAD', shaded: '#5A7280' }
     : { sunny: '#F5A623', shaded: '#7F8C8D' };
@@ -17,9 +16,9 @@ function makeIcons(isNight, isBadWeather) {
     `<div style="width:12px;height:12px;border-radius:50%;background:${color};border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,0.2)"></div>`;
 
   return {
-    sunny: L.divIcon({ className: '', html: dot(colors.sunny), iconSize: [12, 12], iconAnchor: [6, 6] }),
-    shaded: L.divIcon({ className: '', html: dot(colors.shaded), iconSize: [12, 12], iconAnchor: [6, 6] }),
-    default: L.divIcon({ className: '', html: dot('#999'), iconSize: [12, 12], iconAnchor: [6, 6] }),
+    sunny:   L.divIcon({ className: '', html: dot(colors.sunny),  iconSize: [12, 12], iconAnchor: [6, 6] }),
+    shaded:  L.divIcon({ className: '', html: dot(colors.shaded), iconSize: [12, 12], iconAnchor: [6, 6] }),
+    default: L.divIcon({ className: '', html: dot('#999'),        iconSize: [12, 12], iconAnchor: [6, 6] }),
   };
 }
 
@@ -105,13 +104,25 @@ function Map({ terraces, onTerraceClick, selectedTerrace, onBoundsChange, isNigh
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
 
-    const map = L.map(mapRef.current, { zoomControl: false }).setView([48.8566, 2.3522], 13);
+    const parisBounds = L.latLngBounds(
+      L.latLng(48.815, 2.224),
+      L.latLng(48.902, 2.470)
+    );
+
+    const map = L.map(mapRef.current, {
+      zoomControl: false,
+      minZoom: 12,
+      maxZoom: 21,
+      maxBounds: parisBounds,
+      maxBoundsViscosity: 1.0,
+    }).setView([48.8566, 2.3522], 13);
 
     L.control.zoom({ position: 'topright' }).addTo(map);
 
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; OSM &amp; CARTO',
-      maxZoom: 19
+      maxZoom: 21,
+      maxNativeZoom: 19,
     }).addTo(map);
 
     map.on('moveend zoomend', () => renderMarkersInView(true));

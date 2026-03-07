@@ -2,7 +2,7 @@ import SunFilter from './SunFilter';
 import SunPosition from './SunPosition';
 import './TerraceList.css';
 
-function TerraceList({ terraces, onTerraceClick, selectedTerrace, loading, loadingProgress, loadingStage, sunFilters, onFiltersChange, terraceCounts, sunPosition, weatherInfo, inView, listOpen, onListClose }) {
+function TerraceList({ terraces, onTerraceClick, selectedTerrace, loading, loadingProgress, loadingStage, sunFilters, onFiltersChange, terraceCounts, sunPosition, weatherInfo, inView, listOpen, onListClose, selectedDate, selectedHour, onDateChange, onHourChange }) {
   if (loading) {
     const percentage = typeof loadingProgress === 'number'
       ? loadingProgress
@@ -11,7 +11,7 @@ function TerraceList({ terraces, onTerraceClick, selectedTerrace, loading, loadi
     return (
       <div className="sidebar">
         <div className="sidebar-header">
-          <h2>Terrasses</h2>
+          <h2>Résultats</h2>
         </div>
         <div className="loading">
           <div className="spinner"></div>
@@ -47,13 +47,44 @@ function TerraceList({ terraces, onTerraceClick, selectedTerrace, loading, loadi
       .trim();
   };
 
+  const formatHour = (hour) => {
+    const h = Math.floor(hour);
+    const m = Math.round((hour - h) * 60);
+    return m > 0 ? `${h}h${String(m).padStart(2, '0')}` : `${h}h`;
+  };
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return '';
+    const d = new Date(dateStr + 'T12:00:00');
+    return d.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
+  };
+
   return (
     <div className={`sidebar${listOpen ? ' open' : ''}`}>
       <div className="sidebar-header">
-        <h2>Terrasses</h2>
-        <span>
-          {inView ? `${terraces.length} dans la zone` : `${terraces.length} terrasses`}
-        </span>
+        <div className="sidebar-header-top">
+          <h2>Résultats</h2>
+          <span className="sidebar-count">{inView ? `${terraces.length} dans la zone` : `${terraces.length} terrasses`}</span>
+          <button className="sidebar-close" onClick={onListClose}>✕</button>
+        </div>
+        <div className="sidebar-controls">
+          <input
+            type="date"
+            className="date-input"
+            value={selectedDate}
+            onChange={(e) => onDateChange(e.target.value)}
+          />
+          <div className="hour-control">
+            <input
+              type="range"
+              className="hour-slider"
+              min="6" max="22" step="0.25"
+              value={selectedHour}
+              onChange={(e) => onHourChange(parseFloat(e.target.value))}
+            />
+            <div className="hour-display">{formatHour(selectedHour)}</div>
+          </div>
+        </div>
       </div>
       <SunPosition sunPosition={sunPosition} weatherInfo={weatherInfo} />
       <SunFilter
