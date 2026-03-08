@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Map.css';
@@ -23,6 +23,9 @@ function makeIcons(isNight, isBadWeather) {
 }
 
 function Map({ terraces, onTerraceClick, selectedTerrace, onBoundsChange, isNight, isBadWeather, onMapClick }) {
+  const [locating, setLocating] = useState(false);
+  const [locError, setLocError] = useState(false);
+  const userMarkerRef = useRef(null);
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markersRef = useRef([]);
@@ -154,12 +157,50 @@ function Map({ terraces, onTerraceClick, selectedTerrace, onBoundsChange, isNigh
 
     // Suppress bounds callback during programmatic navigation
     suppressBoundsRef.current = true;
-    map.setView([selectedTerrace.lat, selectedTerrace.lng], 17);
+    const targetZoom = Math.max(map.getZoom(), 17);
+    map.setView([selectedTerrace.lat, selectedTerrace.lng], targetZoom);
     setTimeout(() => { suppressBoundsRef.current = false; }, 500);
 
   }, [selectedTerrace]);
 
-  return <div ref={mapRef} className="map"></div>;
+  const handleLocate = () => {
+    if (!navigator.geolocation) return;
+    setLocating(true);
+    setLocError(false);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        const map = mapInstanceRef.current;
+        if (!map) return;
+
+        // Remove previous user marker
+        if (userMarkerRef.current) map.removeLayer(userMarkerRef.current);
+
+        const dot = L.divIcon({
+          className: '',
+          html: `<div style="width:14px;height:14px;border-radius:50%;background:#4A90D9;border:2px solid white;box-shadow:0 1px 6px rgba(0,0,0,0.3)"></div>`,
+          iconSize: [14, 14], iconAnchor: [7, 7],
+        });
+        userMarkerRef.current = L.marker([latitude, longitude], { icon: dot })
+          .bindPopup('<div class="popup-name">Vous êtes ici</div>')
+          .addTo(map);
+
+        map.setView([latitude, longitude], 16);
+        setLocating(false);
+      },
+      () => { setLocating(false); setLocError(true); setTimeout(() => setLocError(false), 3000); },
+      { timeout: 8000 }
+    );
+  };
+
+  return (
+    <div style={{ position: 'relative', flex: 1, height: '100%' }}>
+      <div ref={mapRef} className="map"></div>
+      <button className="locate-btn" onClick={handleLocate} title="Autour de moi">
+        {locating ? '⏳' : locError ? '✕' : '📍'}
+      </button>
+    </div>
+  );
 }
 
 function escapeHtml(text) {
