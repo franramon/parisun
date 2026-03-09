@@ -1,4 +1,33 @@
 import SunCalc from 'suncalc';
+import { getShadowFactor } from './precomputedShadows';
+
+const PARIS_LAT = 48.8566;
+const PARIS_LNG = 2.3522;
+
+/**
+ * Find until what hour a terrace stays sunny on a given date
+ * Returns null if already shaded, or the hour (e.g. 17.5 = 17h30)
+ */
+export function getSunnyUntil(terrace, selectedDate, fromHour) {
+  if (terrace.shadowFactor === undefined) return null;
+
+  // Step forward in 15-min increments up to sunset
+  for (let h = fromHour; h <= 22; h += 0.25) {
+    const hour = Math.floor(h);
+    const min = Math.round((h - hour) * 60);
+    const dt = new Date(`${selectedDate}T${String(hour).padStart(2,'0')}:${String(min).padStart(2,'0')}:00`);
+    const pos = getSolarPosition(dt, PARIS_LAT, PARIS_LNG);
+    if (pos.altitude <= 0) return null; // sunset reached
+    const sf = getShadowFactor(terrace.id, pos.azimuth, pos.altitude);
+    if (sf < 0.5) {
+      // Just turned shaded — return previous slot
+      const prev = h - 0.25;
+      if (prev <= fromHour) return null;
+      return prev;
+    }
+  }
+  return null; // stays sunny past 22h
+}
 
 /**
  * Get solar position for a given date, time, and location

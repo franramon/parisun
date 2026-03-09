@@ -29,11 +29,10 @@ export async function loadLocalTerraces(onProgress = null) {
       const props = feature.properties || {};
       const [lng, lat] = feature.geometry.coordinates;
 
-      // Filter out closed terraces and étalages (display stands, not seating terraces)
+      // Keep only actual terraces (must contain "terrasse")
       const typologie = props.typologie || '';
       const typLower = typologie.toLowerCase();
-      if (typLower.includes('fermée') || typLower.includes('fermee')) continue;
-      if (typLower.includes('étalage') || typLower.includes('etalage')) continue;
+      if (!typLower.includes('terrasse')) continue;
 
       terraces.push({
         id: index, // GeoJSON feature index = shadow data id

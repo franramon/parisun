@@ -164,6 +164,13 @@
   font-weight: 500;
 }
 
+.sun-until {
+  font-size: 11px;
+  color: var(--amber-dark);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
 .sun-badge {
   padding: 2px 8px;
   border-radius: 4px;

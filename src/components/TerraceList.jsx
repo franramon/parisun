@@ -1,5 +1,6 @@
 import SunFilter from './SunFilter';
 import SunPosition from './SunPosition';
+import { getSunnyUntil } from '../utils/solarCalculations';
 import './TerraceList.css';
 
 function TerraceList({ terraces, onTerraceClick, selectedTerrace, loading, loadingProgress, loadingStage, sunFilters, onFiltersChange, terraceCounts, sunPosition, weatherInfo, inView, listOpen, onListClose, selectedDate, selectedHour, onDateChange, onHourChange }) {
@@ -111,7 +112,14 @@ function TerraceList({ terraces, onTerraceClick, selectedTerrace, loading, loadi
               <span className={`sun-badge ${terrace.sunClass}`}>
                 {terrace.sunLabel}
               </span>
-              <span>{shortType(terrace.typologie)}</span>
+              {terrace.sunClass === 'sunny' && (() => {
+                const until = getSunnyUntil(terrace, selectedDate, selectedHour);
+                if (!until) return null;
+                const h = Math.floor(until);
+                const m = Math.round((until - h) * 60);
+                const label = m > 0 ? `jusqu'à ${h}h${String(m).padStart(2,'0')}` : `jusqu'à ${h}h`;
+                return <span className="sun-until">☀️ {label}</span>;
+              })()}
             </div>
           </div>
         ))}
