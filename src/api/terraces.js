@@ -34,6 +34,13 @@ export async function loadLocalTerraces(onProgress = null) {
       const typLower = typologie.toLowerCase();
       if (!typLower.includes('terrasse')) continue;
 
+      // Hide estival terraces outside summer season (May 1 – Sep 30)
+      if (typLower.includes('estivale') || typLower.includes('estival')) {
+        const now = new Date();
+        const month = now.getMonth() + 1; // 1-12
+        if (month < 5 || month >= 10) continue;
+      }
+
       terraces.push({
         id: index, // GeoJSON feature index = shadow data id
         name: props.nom_enseigne || props.nom_commerce || 'Sans nom',

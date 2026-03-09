@@ -113,12 +113,15 @@ function TerraceList({ terraces, onTerraceClick, selectedTerrace, loading, loadi
                 {terrace.sunLabel}
               </span>
               {terrace.sunClass === 'sunny' && (() => {
-                const until = getSunnyUntil(terrace, selectedDate, selectedHour);
-                if (!until) return null;
-                const h = Math.floor(until);
-                const m = Math.round((until - h) * 60);
-                const label = m > 0 ? `jusqu'à ${h}h${String(m).padStart(2,'0')}` : `jusqu'à ${h}h`;
-                return <span className="sun-until">☀️ {label}</span>;
+                const { until, sunset } = getSunnyUntil(terrace, selectedDate, selectedHour);
+                const fmtH = (h) => {
+                  const hh = Math.floor(h);
+                  const mm = Math.round((h - hh) * 60);
+                  return mm > 0 ? `${hh}h${String(mm).padStart(2,'0')}` : `${hh}h`;
+                };
+                if (until) return <span className="sun-until">☀️ jusqu'à {fmtH(until)}</span>;
+                if (sunset) return <span className="sun-until">☀️ jusqu'au coucher ({fmtH(sunset)})</span>;
+                return <span className="sun-until">☀️ toute la soirée</span>;
               })()}
             </div>
           </div>
