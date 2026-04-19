@@ -1,1 +1,18 @@
 BDTOPO*
+
+# Build output
+dist/
+dev-dist/
+node_modules/
+
+# macOS
+.DS_Store
+
+# iOS / Capacitor
+ios/App/App/public/
+ios/App/build/
+ios/App/Pods/
+ios/DerivedData/
+ios/capacitor-cordova-ios-plugins/
+*.xcuserstate
+xcuserdata/

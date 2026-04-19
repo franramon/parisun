@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import Header from './components/Header';
 import Map from './components/Map';
 import TerraceList from './components/TerraceList';
+import InstallPrompt from './components/InstallPrompt';
 import { loadLocalTerraces, fetchAllTerraces } from './api/terraces';
 import { fetchWeatherForecast, fetchArchiveWeather, getWeatherForTime } from './api/weather';
 import { getSolarPosition, calculateSunScore } from './utils/solarCalculations';
@@ -350,6 +351,8 @@ function App() {
         <span>Bâtiments : <strong>IGN BD TOPO</strong></span>
         <span>Météo : <strong>Open-Meteo</strong></span>
       </footer>
+
+      <InstallPrompt />
     </div>
   );
 }
