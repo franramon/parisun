@@ -1,0 +1,212 @@
+:root {
+  --amber: #E8A020;
+  --amber-light: #F5C84C;
+  --amber-pale: #FFF3D6;
+  --amber-dark: #B87A10;
+  --bg: #FEFCF7;
+  --text: #2C2416;
+  --text-light: #7A6B55;
+  --card: #FFFFFF;
+  --shadow: rgba(44, 36, 22, 0.08);
+  --radius: 12px;
+}
+
+.header {
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--card);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  z-index: 1000;
+  flex-shrink: 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.logo h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--amber);
+  white-space: nowrap;
+  margin: 0;
+}
+
+.search-wrap {
+  flex: 1;
+  max-width: 400px;
+  position: relative;
+}
+
+.search-wrap input {
+  width: 100%;
+  padding: 10px 16px 10px 40px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 40px;
+  font-family: inherit;
+  font-size: 14px;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-wrap input:focus {
+  border-color: var(--amber);
+}
+
+.search-wrap input::placeholder {
+  color: var(--text-light);
+}
+
+.search-wrap svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--text-light);
+}
+
+.time-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.date-input {
+  padding: 8px 12px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+  cursor: pointer;
+}
+
+.date-input:focus {
+  border-color: var(--amber);
+}
+
+.hour-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hour-display {
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px;
+  color: var(--amber-dark);
+  min-width: 58px;
+  text-align: center;
+  line-height: 1;
+}
+
+.hour-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 140px;
+  height: 4px;
+  background: linear-gradient(to right, #D4A040, var(--amber), #D4A040);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.hour-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--amber);
+  border: 3px solid white;
+  box-shadow: 0 2px 6px var(--shadow);
+  cursor: grab;
+}
+
+.hour-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--amber);
+  border: 3px solid white;
+  box-shadow: 0 2px 6px var(--shadow);
+  cursor: grab;
+}
+
+.sun-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.weather-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: var(--amber-pale);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.weather-icon {
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 10px 14px;
+    gap: 12px;
+    flex-wrap: nowrap;
+  }
+
+  /* Hide time controls on mobile */
+  .time-controls {
+    display: none;
+  }
+
+  /* Search bar: floating below header */
+  .search-wrap {
+    position: fixed;
+    top: calc(60px + env(safe-area-inset-top, 0px) + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100vw - 32px);
+    max-width: 400px;
+    z-index: 999;
+  }
+
+  .search-wrap input {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 16px rgba(44, 36, 22, 0.15);
+    border: 1px solid rgba(232, 160, 32, 0.25);
+    font-size: 16px;
+  }
+
+  /* Push weather to the right */
+  .logo {
+    flex: 1;
+  }
+
+  .logo h1 {
+    font-size: 17px;
+  }
+}

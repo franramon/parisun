@@ -1,0 +1,109 @@
+.sun-position {
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 16px 16px 16px;
+  transition: background 0.6s ease;
+}
+
+@media (max-width: 768px) {
+  .sun-position {
+    display: none;
+  }
+}
+
+.sun-position-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.sun-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.sun-status-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sun-status {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a3a50;
+}
+
+.sun-weather-detail {
+  font-size: 11px;
+  color: #4a6a80;
+  font-weight: 400;
+}
+
+/* Night text colors */
+.theme-night .sun-status { color: #C8D8E8; }
+.theme-night .sun-weather-detail { color: #7fa8cc; }
+
+/* Bad weather text colors */
+.theme-bad .sun-status { color: #2d3e47; }
+.theme-bad .sun-weather-detail { color: #546E7A; }
+
+.sun-dome {
+  margin: 12px 0 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.dome-svg {
+  width: 150px;
+  height: 150px;
+}
+
+/* Glowing sun (clear weather) */
+.sun-dot-glow {
+  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.9));
+}
+
+/* Muted sun (bad weather) */
+.sun-dot-muted {
+  filter: drop-shadow(0 0 2px rgba(144, 164, 174, 0.5));
+}
+
+/* Rain animation */
+@keyframes rain-fall {
+  0%   { transform: translateY(-6px); opacity: 0; }
+  30%  { opacity: 1; }
+  100% { transform: translateY(10px); opacity: 0; }
+}
+
+.raindrop {
+  animation: rain-fall 1.2s linear infinite;
+}
+
+.sun-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 10px;
+  border-top: 1px solid;
+  transition: border-color 0.6s ease;
+}
+
+.sun-detail-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.detail-label {
+  font-weight: 500;
+  transition: color 0.6s ease;
+}
+
+.detail-value {
+  font-weight: 600;
+  transition: color 0.6s ease;
+}

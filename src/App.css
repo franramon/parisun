@@ -1,0 +1,252 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap');
+
+:root {
+  --amber: #E8A020;
+  --amber-light: #F5C84C;
+  --amber-pale: #FFF3D6;
+  --amber-dark: #B87A10;
+  --bg: #FEFCF7;
+  --text: #2C2416;
+  --text-light: #7A6B55;
+  --card: #FFFFFF;
+  --shadow: rgba(44, 36, 22, 0.08);
+  --radius: 12px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+.app {
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.status-bar {
+  padding: 8px 28px;
+  background: rgba(255, 243, 214, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(232, 160, 32, 0.25);
+  color: var(--text-light);
+  font-family: 'DM Serif Display', serif;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-shrink: 0;
+}
+
+.status-bar strong {
+  color: var(--amber-dark);
+  font-weight: 400;
+}
+
+.fab-list {
+  display: none;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.mobile-time-controls {
+  display: none;
+}
+
+/* Weather modal */
+.weather-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.weather-modal {
+  background: var(--card);
+  border-radius: 24px;
+  padding: 36px 32px 28px;
+  max-width: 320px;
+  width: calc(100vw - 48px);
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  position: relative;
+}
+
+.weather-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--text-light);
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+}
+
+.weather-modal-close:hover {
+  color: var(--text);
+}
+
+.weather-modal-icon {
+  font-size: 52px;
+  margin-bottom: 12px;
+}
+
+.weather-modal-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.weather-modal-text {
+  font-size: 14px;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.weather-modal-btn {
+  background: var(--amber);
+  color: white;
+  border: none;
+  border-radius: 40px;
+  padding: 10px 28px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.weather-modal-btn:hover {
+  background: var(--amber-dark);
+}
+
+@media (max-width: 768px) {
+  .status-bar {
+    display: none;
+  }
+
+  /* FAB toggle list */
+  .fab-list {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    position: fixed;
+    top: 118px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background: rgba(255, 243, 214, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--amber-dark);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 12px 28px;
+    border-radius: 40px;
+    border: 1px solid rgba(232, 160, 32, 0.3);
+    box-shadow: 0 4px 20px rgba(44, 36, 22, 0.18);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+
+  .fab-list:active {
+    background: rgba(245, 200, 76, 0.95);
+    box-shadow: 0 2px 10px rgba(44, 36, 22, 0.25);
+  }
+
+  /* Floating time controls on map */
+  .mobile-time-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: absolute;
+    bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 10px 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    white-space: nowrap;
+  }
+
+  .mobile-time-controls .date-input {
+    font-size: 12px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+  }
+
+  .mobile-time-controls .hour-control {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .mobile-time-controls .hour-slider {
+    width: 100px;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(to right, #D4A040, var(--amber), #D4A040);
+    border-radius: 2px;
+    outline: none;
+  }
+
+  .mobile-time-controls .hour-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--amber);
+    border: 2px solid white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  }
+
+  .mobile-time-controls .hour-display {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--amber-dark);
+    min-width: 40px;
+  }
+
+  .mobile-time-controls.hidden {
+    display: none;
+  }
+}
