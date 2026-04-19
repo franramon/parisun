@@ -3,38 +3,38 @@
   z-index: 1;
   height: 100%;
   width: 100%;
+  background: var(--bg);
 }
 
-/* Zoom buttons style */
 .leaflet-control-zoom {
-  border: none !important;
-  box-shadow: 0 4px 16px rgba(44, 36, 22, 0.15) !important;
-  border-radius: 12px !important;
+  border: 1px solid var(--line) !important;
+  box-shadow: var(--shadow-md) !important;
+  border-radius: 14px !important;
   overflow: hidden;
 }
 
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out {
-  background: rgba(255, 255, 255, 0.95) !important;
-  backdrop-filter: blur(8px) !important;
-  color: var(--amber-dark) !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(10px) !important;
+  color: var(--text) !important;
   border: none !important;
   font-size: 18px !important;
   font-weight: 400 !important;
-  width: 36px !important;
-  height: 36px !important;
-  line-height: 36px !important;
-  transition: background 0.2s !important;
+  width: 40px !important;
+  height: 40px !important;
+  line-height: 40px !important;
+  transition: background 0.15s !important;
 }
 
 .leaflet-control-zoom-in:hover,
 .leaflet-control-zoom-out:hover {
   background: var(--amber-pale) !important;
-  color: var(--amber) !important;
+  color: var(--amber-dark) !important;
 }
 
 .leaflet-control-zoom-in {
-  border-bottom: 1px solid rgba(232, 160, 32, 0.2) !important;
+  border-bottom: 1px solid var(--line) !important;
 }
 
 .locate-btn {
@@ -42,32 +42,34 @@
   bottom: 24px;
   left: 16px;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px);
-  border: none;
-  border-radius: 12px;
-  width: 36px;
-  height: 36px;
-  font-size: 18px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  width: 40px;
+  height: 40px;
+  font-size: 17px;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(44, 36, 22, 0.15);
+  box-shadow: var(--shadow-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
+  transition: background 0.15s, transform 0.1s;
 }
 
 .locate-btn:hover {
   background: var(--amber-pale);
 }
 
+.locate-btn:active {
+  transform: scale(0.96);
+}
+
 @media (max-width: 768px) {
   .locate-btn {
     bottom: calc(90px + env(safe-area-inset-bottom, 0px));
   }
-}
 
-@media (max-width: 768px) {
   .leaflet-top.leaflet-right {
     top: auto !important;
     bottom: calc(90px + env(safe-area-inset-bottom, 0px));
@@ -76,29 +78,93 @@
 }
 
 .leaflet-popup-content-wrapper {
-  border-radius: var(--radius) !important;
-  box-shadow: 0 4px 20px var(--shadow) !important;
-  font-family: 'DM Sans', sans-serif !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
+  font-family: var(--font-sans) !important;
+  border: 1px solid var(--line);
+  padding: 2px !important;
+}
+
+.leaflet-popup-tip {
+  box-shadow: var(--shadow-md) !important;
 }
 
 .leaflet-popup-content {
-  margin: 12px 16px !important;
+  margin: 14px 18px !important;
   font-size: 13px;
+  min-width: 200px;
+}
+
+.leaflet-popup-close-button {
+  top: 8px !important;
+  right: 8px !important;
+  color: var(--text-muted) !important;
+  font-size: 22px !important;
+  width: 24px !important;
+  height: 24px !important;
+  line-height: 22px !important;
+  border-radius: 50% !important;
+  transition: background 0.15s;
+}
+
+.leaflet-popup-close-button:hover {
+  background: var(--surface-2);
+  color: var(--text);
 }
 
 .popup-name {
-  font-weight: 600;
-  font-size: 14px;
-  margin-bottom: 4px;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 3px;
+  line-height: 1.25;
 }
 
 .popup-addr {
   color: var(--text-light);
   font-size: 12px;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
+  line-height: 1.4;
 }
 
-.popup-type {
+.popup-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.popup-shop {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-light);
+  letter-spacing: 0.01em;
+}
+
+.popup-sun {
   font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.popup-sun.sunny {
+  background: var(--amber-pale);
   color: var(--amber-dark);
+}
+
+.popup-sun.shaded {
+  background: #E8EAEC;
+  color: #5A6470;
+}
+
+.popup-sun.none {
+  background: #EDEBE7;
+  color: #8A8070;
 }

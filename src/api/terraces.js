@@ -1,5 +1,19 @@
 const API_BASE_URL = 'https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/terrasses-autorisations/records';
 
+const CUSTOM_TERRACES = [
+  {
+    id: 'custom-1',
+    name: 'Tennis Sainte-Anne',
+    address: '',
+    arrondissement: '75014',
+    typologie: 'TERRASSE OUVERTE',
+    longueur: 0,
+    largeur: 0,
+    lat: 48.829903,
+    lng: 2.339987,
+  },
+];
+
 /**
  * Load terraces from local GeoJSON file
  * This bypasses the API 10,000 limit and loads all 24k+ terraces instantly
@@ -10,7 +24,7 @@ export async function loadLocalTerraces(onProgress = null) {
   try {
     console.log('📂 Loading terraces from local file...');
 
-    const response = await fetch('/terraces-data.geojson');
+    const response = await fetch('/terraces-data-filtered-naf.geojson');
     if (!response.ok) {
       throw new Error(`Failed to load local data: ${response.status}`);
     }
@@ -47,6 +61,7 @@ export async function loadLocalTerraces(onProgress = null) {
         address: props.adresse || '',
         arrondissement: props.arrondissement || '',
         typologie: typologie,
+        naf: props.naf || null,
         longueur: props.longueur || 0,
         largeur: props.largeur || 0,
         lat,
@@ -70,6 +85,7 @@ export async function loadLocalTerraces(onProgress = null) {
       });
     }
 
+    terraces.push(...CUSTOM_TERRACES);
     console.log(`✓ Loaded ${terraces.length} terraces from local file`);
     return terraces;
 
@@ -188,6 +204,7 @@ export async function fetchAllTerraces(onProgress = null) {
       console.log(`📍 Loaded ${allTerraces.length} / ${totalCount} terraces`);
     }
 
+    allTerraces.push(...CUSTOM_TERRACES);
     console.log(`✓ Successfully loaded ${allTerraces.length} terraces`);
     return allTerraces;
 

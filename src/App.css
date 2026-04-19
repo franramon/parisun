@@ -1,16 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --amber: #E8A020;
-  --amber-light: #F5C84C;
-  --amber-pale: #FFF3D6;
-  --amber-dark: #B87A10;
-  --bg: #FEFCF7;
-  --text: #2C2416;
-  --text-light: #7A6B55;
+  --amber: #E89A1A;
+  --amber-light: #F5C24A;
+  --amber-pale: #FFF0D1;
+  --amber-dark: #A35F0A;
+  --amber-soft: #FFF8E8;
+
+  --bg: #FAF7F1;
+  --surface: #FFFFFF;
+  --surface-2: #F3EFE6;
   --card: #FFFFFF;
-  --shadow: rgba(44, 36, 22, 0.08);
-  --radius: 12px;
+
+  --text: #1F1A12;
+  --text-light: #6B6152;
+  --text-muted: #958B7A;
+
+  --line: rgba(31, 26, 18, 0.08);
+  --line-strong: rgba(31, 26, 18, 0.14);
+
+  --shadow-sm: 0 1px 2px rgba(31, 26, 18, 0.06);
+  --shadow-md: 0 6px 20px rgba(31, 26, 18, 0.08);
+  --shadow-lg: 0 18px 48px rgba(31, 26, 18, 0.14);
+
+  --radius-sm: 10px;
+  --radius: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Fraunces', 'DM Serif Display', serif;
 }
 
 * {
@@ -19,11 +38,14 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: 'DM Sans', sans-serif;
+html, body {
+  font-family: var(--font-sans);
+  font-feature-settings: 'ss01', 'cv11';
   background: var(--bg);
   color: var(--text);
   overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .app {
@@ -42,29 +64,29 @@ body {
 }
 
 .status-bar {
-  padding: 8px 28px;
-  background: rgba(255, 243, 214, 0.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(232, 160, 32, 0.25);
+  padding: 10px 28px;
+  background: rgba(255, 248, 232, 0.78);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-top: 1px solid var(--line);
   color: var(--text-light);
-  font-family: 'DM Serif Display', serif;
-  font-size: 12px;
-  letter-spacing: 0.02em;
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  letter-spacing: 0.01em;
   display: flex;
   justify-content: center;
-  gap: 32px;
+  gap: 28px;
   flex-shrink: 0;
 }
 
 .status-bar strong {
   color: var(--amber-dark);
-  font-weight: 400;
+  font-weight: 600;
 }
 
 .fab-list {
   display: none;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-sans);
 }
 
 .mobile-time-controls {
@@ -76,76 +98,101 @@ body {
   position: fixed;
   inset: 0;
   z-index: 2000;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(20, 15, 8, 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: overlay-in 0.2s ease-out;
+}
+
+@keyframes overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .weather-modal {
   background: var(--card);
-  border-radius: 24px;
-  padding: 36px 32px 28px;
-  max-width: 320px;
+  border-radius: var(--radius-xl);
+  padding: 40px 32px 28px;
+  max-width: 340px;
   width: calc(100vw - 48px);
   text-align: center;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--shadow-lg);
   position: relative;
+  animation: modal-in 0.25s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+@keyframes modal-in {
+  from { opacity: 0; transform: scale(0.94) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .weather-modal-close {
   position: absolute;
   top: 14px;
-  right: 16px;
-  background: none;
+  right: 14px;
+  background: var(--surface-2);
   border: none;
-  font-size: 18px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 14px;
   color: var(--text-light);
   cursor: pointer;
   line-height: 1;
-  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
 }
 
 .weather-modal-close:hover {
+  background: var(--amber-pale);
   color: var(--text);
 }
 
 .weather-modal-icon {
-  font-size: 52px;
-  margin-bottom: 12px;
+  font-size: 56px;
+  margin-bottom: 14px;
 }
 
 .weather-modal-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 22px;
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
   color: var(--text);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .weather-modal-text {
   font-size: 14px;
   color: var(--text-light);
-  line-height: 1.6;
+  line-height: 1.55;
   margin-bottom: 24px;
 }
 
 .weather-modal-btn {
-  background: var(--amber);
+  background: var(--text);
   color: white;
   border: none;
-  border-radius: 40px;
-  padding: 10px 28px;
+  border-radius: 999px;
+  padding: 12px 28px;
   font-family: inherit;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.15s, transform 0.1s;
 }
 
 .weather-modal-btn:hover {
-  background: var(--amber-dark);
+  background: #000;
+}
+
+.weather-modal-btn:active {
+  transform: scale(0.97);
 }
 
 @media (max-width: 768px) {
@@ -153,62 +200,63 @@ body {
     display: none;
   }
 
-  /* FAB toggle list */
   .fab-list {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 6px;
     position: fixed;
-    top: 118px;
+    top: calc(60px + env(safe-area-inset-top, 0px) + 74px);
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
-    background: rgba(255, 243, 214, 0.92);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: var(--amber-dark);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 14px;
     font-weight: 500;
-    padding: 12px 28px;
-    border-radius: 40px;
-    border: 1px solid rgba(232, 160, 32, 0.3);
-    box-shadow: 0 4px 20px rgba(44, 36, 22, 0.18);
+    padding: 11px 22px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-md);
     cursor: pointer;
     white-space: nowrap;
-    transition: background 0.2s, box-shadow 0.2s;
+    transition: transform 0.1s, box-shadow 0.15s;
   }
 
   .fab-list:active {
-    background: rgba(245, 200, 76, 0.95);
-    box-shadow: 0 2px 10px rgba(44, 36, 22, 0.25);
+    transform: translateX(-50%) scale(0.97);
+    box-shadow: var(--shadow-sm);
   }
 
-  /* Floating time controls on map */
   .mobile-time-controls {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     position: absolute;
-    bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid var(--line);
+    border-radius: 999px;
     padding: 10px 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    box-shadow: var(--shadow-md);
     white-space: nowrap;
   }
 
   .mobile-time-controls .date-input {
+    font-family: inherit;
     font-size: 12px;
-    padding: 6px 8px;
-    border-radius: 8px;
-    border: 1px solid rgba(0,0,0,0.1);
-    background: var(--bg);
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--surface-2);
     color: var(--text);
     outline: none;
   }
@@ -216,33 +264,34 @@ body {
   .mobile-time-controls .hour-control {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 10px;
   }
 
   .mobile-time-controls .hour-slider {
-    width: 100px;
+    width: 110px;
     height: 4px;
     -webkit-appearance: none;
     appearance: none;
-    background: linear-gradient(to right, #D4A040, var(--amber), #D4A040);
+    background: linear-gradient(to right, var(--amber-light), var(--amber));
     border-radius: 2px;
     outline: none;
   }
 
   .mobile-time-controls .hour-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     background: var(--amber);
-    border: 2px solid white;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    border: 3px solid white;
+    box-shadow: 0 2px 6px rgba(31, 26, 18, 0.25);
   }
 
   .mobile-time-controls .hour-display {
-    font-family: 'DM Serif Display', serif;
+    font-family: var(--font-serif);
     font-size: 18px;
-    color: var(--amber-dark);
+    font-weight: 500;
+    color: var(--text);
     min-width: 40px;
   }
 

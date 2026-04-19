@@ -1,6 +1,7 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { getShopLabel } from '../utils/nafLabels';
 import './Map.css';
 
 const MAX_MARKERS = 500;
@@ -82,8 +83,10 @@ function Map({ terraces, onTerraceClick, selectedTerrace, onBoundsChange, isNigh
         .bindPopup(
           `<div class="popup-name">${escapeHtml(terrace.name)}</div>
            <div class="popup-addr">${escapeHtml(terrace.address)} ${escapeHtml(terrace.arrondissement)}</div>
-           <div class="popup-type">${escapeHtml(terrace.typologie)}</div>
-           <div style="margin-top:4px;font-size:12px">${terrace.longueur}m × ${terrace.largeur}m — <strong>${terrace.sunLabel}</strong></div>`
+           <div class="popup-footer">
+             <span class="popup-shop">${escapeHtml(getShopLabel(terrace.naf))}</span>
+             <span class="popup-sun ${terrace.sunClass}">${escapeHtml(terrace.sunLabel)}</span>
+           </div>`
         )
         .addTo(map);
 

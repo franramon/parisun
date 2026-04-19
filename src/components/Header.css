@@ -1,23 +1,10 @@
-:root {
-  --amber: #E8A020;
-  --amber-light: #F5C84C;
-  --amber-pale: #FFF3D6;
-  --amber-dark: #B87A10;
-  --bg: #FEFCF7;
-  --text: #2C2416;
-  --text-light: #7A6B55;
-  --card: #FFFFFF;
-  --shadow: rgba(44, 36, 22, 0.08);
-  --radius: 12px;
-}
-
 .header {
-  padding: 16px 24px;
+  padding: 14px 24px;
   display: flex;
   align-items: center;
   gap: 20px;
-  background: var(--card);
-  border-bottom: 1px solid rgba(0,0,0,0.06);
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
   z-index: 1000;
   flex-shrink: 0;
 }
@@ -30,96 +17,115 @@
 }
 
 .logo h1 {
-  font-family: 'DM Serif Display', serif;
-  font-size: 20px;
-  font-weight: 400;
-  color: var(--amber);
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: -0.015em;
+  color: var(--text);
   white-space: nowrap;
   margin: 0;
 }
 
 .search-wrap {
   flex: 1;
-  max-width: 400px;
+  max-width: 440px;
   position: relative;
 }
 
 .search-wrap input {
   width: 100%;
-  padding: 10px 16px 10px 40px;
-  border: 1px solid rgba(0,0,0,0.1);
-  border-radius: 40px;
+  padding: 11px 16px 11px 42px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
   font-family: inherit;
   font-size: 14px;
-  background: var(--bg);
+  font-weight: 400;
+  background: var(--surface-2);
   color: var(--text);
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+
+.search-wrap input:hover {
+  border-color: var(--line-strong);
 }
 
 .search-wrap input:focus {
   border-color: var(--amber);
+  background: var(--surface);
+  box-shadow: 0 0 0 4px rgba(232, 154, 26, 0.12);
 }
 
 .search-wrap input::placeholder {
-  color: var(--text-light);
+  color: var(--text-muted);
 }
 
 .search-wrap svg {
   position: absolute;
-  left: 14px;
+  left: 16px;
   top: 50%;
   transform: translateY(-50%);
   width: 16px;
   height: 16px;
-  color: var(--text-light);
+  color: var(--text-muted);
 }
 
 .time-controls {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   flex-shrink: 0;
 }
 
 .date-input {
-  padding: 8px 12px;
-  border: 1px solid rgba(0,0,0,0.1);
-  border-radius: 8px;
+  padding: 9px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
   font-family: inherit;
   font-size: 13px;
-  background: var(--bg);
+  font-weight: 500;
+  background: var(--surface-2);
   color: var(--text);
   outline: none;
   cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.date-input:hover {
+  border-color: var(--line-strong);
 }
 
 .date-input:focus {
   border-color: var(--amber);
+  background: var(--surface);
 }
 
 .hour-control {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .hour-display {
-  font-family: 'DM Serif Display', serif;
+  font-family: var(--font-serif);
   font-size: 28px;
-  color: var(--amber-dark);
-  min-width: 58px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--text);
+  min-width: 60px;
   text-align: center;
   line-height: 1;
+  letter-spacing: -0.02em;
 }
 
 .hour-slider {
   -webkit-appearance: none;
   appearance: none;
-  width: 140px;
+  width: 150px;
   height: 4px;
-  background: linear-gradient(to right, #D4A040, var(--amber), #D4A040);
-  border-radius: 2px;
+  background: linear-gradient(to right, var(--amber-light), var(--amber));
+  border-radius: 999px;
   outline: none;
   cursor: pointer;
 }
@@ -127,22 +133,28 @@
 .hour-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: var(--amber);
   border: 3px solid white;
-  box-shadow: 0 2px 6px var(--shadow);
+  box-shadow: 0 2px 8px rgba(31, 26, 18, 0.2);
   cursor: grab;
+  transition: transform 0.1s;
+}
+
+.hour-slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.1);
 }
 
 .hour-slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: var(--amber);
   border: 3px solid white;
-  box-shadow: 0 2px 6px var(--shadow);
+  box-shadow: 0 2px 8px rgba(31, 26, 18, 0.2);
   cursor: grab;
 }
 
@@ -155,58 +167,74 @@
 }
 
 .weather-indicator {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 20px;
-  background: var(--amber-pale);
-  font-size: 12px;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: var(--amber-soft);
+  border: 1px solid var(--amber-pale);
+  font-size: 12.5px;
   font-weight: 500;
   color: var(--text);
 }
 
 .weather-icon {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 @media (max-width: 768px) {
   .header {
-    padding: 10px 14px;
+    padding: 12px 16px;
     gap: 12px;
     flex-wrap: nowrap;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
   }
 
-  /* Hide time controls on mobile */
   .time-controls {
     display: none;
   }
 
-  /* Search bar: floating below header */
   .search-wrap {
     position: fixed;
-    top: calc(60px + env(safe-area-inset-top, 0px) + 8px);
+    top: calc(62px + env(safe-area-inset-top, 0px) + 10px);
     left: 50%;
     transform: translateX(-50%);
-    width: calc(100vw - 32px);
-    max-width: 400px;
+    width: calc(100vw - 24px);
+    max-width: 440px;
     z-index: 999;
   }
 
   .search-wrap input {
     background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(8px);
-    box-shadow: 0 4px 16px rgba(44, 36, 22, 0.15);
-    border: 1px solid rgba(232, 160, 32, 0.25);
-    font-size: 16px;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--line);
+    font-size: 15px;
+    padding-top: 12px;
+    padding-bottom: 12px;
   }
 
-  /* Push weather to the right */
   .logo {
     flex: 1;
   }
 
   .logo h1 {
-    font-size: 17px;
+    font-size: 18px;
+  }
+
+  .weather-indicator {
+    padding: 6px 10px;
+    font-size: 11.5px;
+  }
+
+  .weather-indicator .weather-label {
+    display: none;
+  }
+
+  .weather-indicator .weather-icon {
+    font-size: 18px;
   }
 }

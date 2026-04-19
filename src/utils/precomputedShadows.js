@@ -20,7 +20,7 @@ export async function loadShadowData(onProgress = null) {
     return shadowDataPromise;
   }
 
-  shadowDataPromise = fetch('/shadow-data_V3.json')
+  shadowDataPromise = fetch('/shadow-data_V5.json')
     .then(async response => {
       if (!response.ok) {
         throw new Error('Shadow data not found');
@@ -56,7 +56,7 @@ export async function loadShadowData(onProgress = null) {
       return response.json();
     })
     .then(data => {
-      // Decode V3 compact format: base64 uint8 (0-5) -> shadow matrix (0-100)
+      // Decode compact format: base64 uint8 (0-5) -> shadow matrix (0-100)
       const nAlt = data.altitudes.length;
       const nAz = data.azimuths.length;
       data.terraces = data.terraces.map(t => {
