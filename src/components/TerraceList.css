@@ -316,15 +316,32 @@
 
   .sidebar-header {
     padding: 16px 18px 12px;
+    touch-action: none;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
-  .sidebar-header::before {
-    content: '';
+  .sidebar-header:active {
+    cursor: grabbing;
+  }
+
+  .sidebar-grabber {
     display: block;
-    width: 38px;
-    height: 4px;
+    width: 44px;
+    height: 5px;
     background: var(--line-strong);
     border-radius: 999px;
-    margin: -6px auto 12px;
+    margin: -4px auto 12px;
+    transition: background 0.15s, width 0.15s;
   }
+
+  .sidebar-header:active .sidebar-grabber {
+    background: var(--text-muted);
+    width: 54px;
+  }
+}
+
+.sidebar-grabber {
+  display: none;
 }
