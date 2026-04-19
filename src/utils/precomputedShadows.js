@@ -56,10 +56,15 @@ export async function loadShadowData(onProgress = null) {
       return response.json();
     })
     .then(data => {
-      // Decode compact format: base64 uint8 (0-5) -> shadow matrix (0-100)
+      // Format auto-detection:
+      //  - V3: { id, s } where s is base64-packed uint8 (0-5) scaled ×20 to get 0-100
+      //  - V5: { id, shadows } already a 2D matrix of 0-100 values
       const nAlt = data.altitudes.length;
       const nAz = data.azimuths.length;
       data.terraces = data.terraces.map(t => {
+        if (Array.isArray(t.shadows)) {
+          return { id: t.id, shadows: t.shadows };
+        }
         const bytes = Uint8Array.from(atob(t.s), c => c.charCodeAt(0));
         const shadows = [];
         for (let a = 0; a < nAlt; a++) {
@@ -209,7 +214,7 @@ function findGridIndices(value, grid, wrap) {
  */
 export function enrichTerracesWithShadows(terraces, sunPosition) {
   if (!shadowData) {
-    console.warn('Shadow data not loaded yet');
+    // Expected during the brief window between terraces loading and shadow data arriving
     return terraces;
   }
 
