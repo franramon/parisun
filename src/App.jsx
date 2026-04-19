@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import Header from './components/Header';
 import Map from './components/Map';
 import TerraceList from './components/TerraceList';
+import SunFilter from './components/SunFilter';
 import InstallPrompt from './components/InstallPrompt';
 import { loadLocalTerraces, fetchAllTerraces } from './api/terraces';
 import { fetchWeatherForecast, fetchArchiveWeather, getWeatherForTime } from './api/weather';
@@ -335,15 +336,25 @@ function App() {
 
       </main>
 
-      {/* Mobile FAB — hidden when list is open */}
+      {/* Mobile FAB + filter — hidden when list is open */}
       {!listOpen && (
-        <button
-          className="fab-list"
-          onClick={() => setListOpen(true)}
-          aria-label="Afficher la liste"
-        >
-          {`Voir les ${(terracesInView ?? filteredTerraces).length} terrasses`}
-        </button>
+        <div className="mobile-bottom-bar">
+          <div className="mobile-filter-wrap">
+            <SunFilter
+              activeFilters={sunFilters}
+              onChange={setSunFilters}
+              terraceCounts={terraceCounts}
+              compact={true}
+            />
+          </div>
+          <button
+            className="fab-list"
+            onClick={() => setListOpen(true)}
+            aria-label="Afficher la liste"
+          >
+            {`Voir les ${(terracesInView ?? filteredTerraces).length} terrasses`}
+          </button>
+        </div>
       )}
 
       <footer className="status-bar">
