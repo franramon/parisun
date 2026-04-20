@@ -146,9 +146,6 @@ function TerraceList({ terraces, onTerraceClick, selectedTerrace, loading, loadi
               {terrace.address} {terrace.arrondissement}
             </div>
             <div className="terrace-meta">
-              <span className="tag">
-                {terrace.longueur}×{terrace.largeur}m
-              </span>
               <span className={`sun-badge ${terrace.sunClass}`}>
                 {terrace.sunLabel}
               </span>
