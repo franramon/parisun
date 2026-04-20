@@ -43,6 +43,46 @@ const NAF_LABELS = {
   '96.02B': 'Soins de beauté',
 };
 
+const NAF_ICONS = {
+  '56.30Z': '🍺',
+  '56.10A': '🍽️',
+  '56.10C': '🍔',
+  '56.21Z': '🍱',
+  '46.34Z': '🍷',
+  '47.25Z': '🍷',
+  '55.10Z': '🏨',
+  '10.71C': '🥐',
+  '10.71D': '🧁',
+  '10.82Z': '🍫',
+  '47.24Z': '🥐',
+  '47.22Z': '🥩',
+  '47.23Z': '🐟',
+  '47.21Z': '🥬',
+  '47.29Z': '🛒',
+  '47.11B': '🛒',
+  '47.11D': '🛒',
+  '47.76Z': '💐',
+  '47.73Z': '💊',
+  '47.61Z': '📚',
+  '47.62Z': '📰',
+  '47.26Z': '🚬',
+};
+
+export function getShopIcon(naf) {
+  if (!naf) return '·';
+  if (NAF_ICONS[naf]) return NAF_ICONS[naf];
+  const prefix = naf.slice(0, 2);
+  const fallback = {
+    '56': '🍽️',
+    '55': '🏨',
+    '46': '🍷',
+    '10': '🥐',
+    '11': '🍺',
+    '47': '🛍️',
+  };
+  return fallback[prefix] || '·';
+}
+
 export function getShopLabel(naf) {
   if (!naf) return 'Commerce';
   if (NAF_LABELS[naf]) return NAF_LABELS[naf];

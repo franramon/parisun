@@ -78,55 +78,145 @@
 }
 
 .leaflet-popup-content-wrapper {
-  border-radius: var(--radius-lg) !important;
-  box-shadow: var(--shadow-lg) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 10px 40px rgba(31, 26, 18, 0.18), 0 2px 6px rgba(31, 26, 18, 0.06) !important;
   font-family: var(--font-sans) !important;
-  border: 1px solid var(--line);
-  padding: 2px !important;
+  border: 1px solid rgba(31, 26, 18, 0.06);
+  padding: 0 !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  overflow: hidden;
+}
+
+.leaflet-popup-tip-container {
+  width: 20px !important;
+  height: 20px !important;
+  margin-left: -10px !important;
+  overflow: visible !important;
 }
 
 .leaflet-popup-tip {
-  box-shadow: var(--shadow-md) !important;
+  width: 10px !important;
+  height: 10px !important;
+  padding: 0 !important;
+  margin: 2px auto 0 !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(31, 26, 18, 0.06) !important;
+  box-shadow: 0 4px 10px rgba(31, 26, 18, 0.12) !important;
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  transform: none !important;
+}
+
+.leaflet-popup {
+  margin-bottom: 14px;
 }
 
 .leaflet-popup-content {
-  margin: 14px 18px !important;
+  margin: 0 !important;
   font-size: 13px;
-  min-width: 200px;
+  min-width: 240px;
+  max-width: 280px;
 }
 
 .leaflet-popup-close-button {
-  top: 8px !important;
-  right: 8px !important;
+  top: 10px !important;
+  right: 10px !important;
   color: var(--text-muted) !important;
-  font-size: 22px !important;
-  width: 24px !important;
-  height: 24px !important;
-  line-height: 22px !important;
+  font-size: 16px !important;
+  width: 26px !important;
+  height: 26px !important;
+  line-height: 26px !important;
   border-radius: 50% !important;
-  transition: background 0.15s;
+  background: rgba(31, 26, 18, 0.04) !important;
+  transition: background 0.15s, color 0.15s;
+  text-align: center;
 }
 
 .leaflet-popup-close-button:hover {
-  background: var(--surface-2);
-  color: var(--text);
+  background: rgba(31, 26, 18, 0.08) !important;
+  color: var(--text) !important;
+}
+
+.popup-card {
+  padding: 16px 18px 14px;
+}
+
+.popup-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.popup-status-icon {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.popup-status-icon.sunny {
+  background: linear-gradient(135deg, #FFE9B8, #FFCF6E);
+  box-shadow: 0 2px 8px rgba(245, 166, 35, 0.25);
+}
+
+.popup-status-icon.shaded {
+  background: linear-gradient(135deg, #E8EEF3, #C8D3DC);
+  box-shadow: 0 2px 8px rgba(90, 110, 125, 0.2);
+}
+
+.popup-status-icon.none {
+  background: linear-gradient(135deg, #EDEBE7, #D8D3CA);
+}
+
+.popup-title {
+  flex: 1;
+  min-width: 0;
+  padding-right: 22px;
 }
 
 .popup-name {
   font-family: var(--font-serif);
   font-weight: 500;
-  font-size: 16px;
-  letter-spacing: -0.01em;
+  font-size: 17px;
+  letter-spacing: -0.015em;
   color: var(--text);
-  margin-bottom: 3px;
-  line-height: 1.25;
+  line-height: 1.2;
+  margin-bottom: 2px;
+  word-wrap: break-word;
 }
 
 .popup-addr {
   color: var(--text-light);
   font-size: 12px;
-  margin-bottom: 10px;
-  line-height: 1.4;
+  line-height: 1.35;
+  word-wrap: break-word;
+}
+
+.popup-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.popup-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--text-light);
+}
+
+.popup-row-icon {
+  font-size: 13px;
+  opacity: 0.7;
 }
 
 .popup-footer {
@@ -134,24 +224,28 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding-top: 8px;
-  border-top: 1px solid var(--line);
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(31, 26, 18, 0.06);
 }
 
 .popup-shop {
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 500;
-  color: var(--text-light);
-  letter-spacing: 0.01em;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 .popup-sun {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   font-size: 11px;
   font-weight: 600;
-  padding: 3px 10px;
+  padding: 4px 10px;
   border-radius: 999px;
   letter-spacing: 0.02em;
-  text-transform: uppercase;
 }
 
 .popup-sun.sunny {
