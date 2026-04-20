@@ -110,18 +110,26 @@ function Map({ terraces, onTerraceClick, selectedTerrace, onBoundsChange, isNigh
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
 
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+    // Core Paris box
+    const southWest = L.latLng(48.815, 2.224);
+    const northEast = L.latLng(48.902, 2.470);
+    // Expand maxBounds by 30% on each side so map isn't cropped hard on Paris
+    const latPad = (northEast.lat - southWest.lat) * 0.15;
+    const lngPad = (northEast.lng - southWest.lng) * 0.15;
     const parisBounds = L.latLngBounds(
-      L.latLng(48.815, 2.224),
-      L.latLng(48.902, 2.470)
+      L.latLng(southWest.lat - latPad, southWest.lng - lngPad),
+      L.latLng(northEast.lat + latPad, northEast.lng + lngPad)
     );
 
     const map = L.map(mapRef.current, {
       zoomControl: false,
-      minZoom: 12,
+      minZoom: isMobile ? 11 : 12,
       maxZoom: 21,
       maxBounds: parisBounds,
       maxBoundsViscosity: 1.0,
-    }).setView([48.8566, 2.3522], 13);
+    }).setView([48.8566, 2.3522], isMobile ? 12 : 13);
 
     L.control.zoom({ position: 'topright' }).addTo(map);
 
