@@ -1,9 +1,36 @@
+import { useRef, useState } from 'react';
 import SunFilter from './SunFilter';
 import SunPosition from './SunPosition';
 import { getSunnyUntil } from '../utils/solarCalculations';
 import './TerraceList.css';
 
 function TerraceList({ terraces, onTerraceClick, selectedTerrace, loading, loadingProgress, loadingStage, sunFilters, onFiltersChange, terraceCounts, sunPosition, weatherInfo, inView, listOpen, onListClose, selectedDate, selectedHour, onDateChange, onHourChange }) {
+  const dragStartY = useRef(null);
+  const dragStartScrollTop = useRef(0);
+  const listBodyRef = useRef(null);
+  const [dragDy, setDragDy] = useState(0);
+
+  const onTouchStart = (e) => {
+    const scrollTop = listBodyRef.current?.scrollTop ?? 0;
+    dragStartScrollTop.current = scrollTop;
+    dragStartY.current = e.touches[0].clientY;
+    setDragDy(0);
+  };
+  const onTouchMove = (e) => {
+    if (dragStartY.current == null) return;
+    const dy = e.touches[0].clientY - dragStartY.current;
+    if (dy > 0 && dragStartScrollTop.current <= 0) {
+      setDragDy(dy);
+    }
+  };
+  const onTouchEnd = () => {
+    if (dragStartY.current == null) return;
+    if (dragDy > 80) {
+      onListClose?.();
+    }
+    dragStartY.current = null;
+    setDragDy(0);
+  };
   if (loading) {
     const percentage = typeof loadingProgress === 'number'
       ? loadingProgress
@@ -60,9 +87,22 @@ function TerraceList({ terraces, onTerraceClick, selectedTerrace, loading, loadi
     return d.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
   };
 
+  const dragStyle = dragDy > 0
+    ? { transform: `translateY(${dragDy}px)`, transition: 'none' }
+    : undefined;
+
   return (
-    <div className={`sidebar${listOpen ? ' open' : ''}`}>
-      <div className="sidebar-header">
+    <div
+      className={`sidebar${listOpen ? ' open' : ''}`}
+      style={dragStyle}
+    >
+      <div
+        className="sidebar-header"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
+        <div className="sidebar-grabber" aria-hidden="true" />
         <div className="sidebar-header-top">
           <h2>Résultats</h2>
           <span className="sidebar-count">{inView ? `${terraces.length} dans la zone` : `${terraces.length} terrasses`}</span>
@@ -94,7 +134,7 @@ function TerraceList({ terraces, onTerraceClick, selectedTerrace, loading, loadi
         terraceCounts={terraceCounts}
         compact={false}
       />
-      <div className="terrace-list">
+      <div className="terrace-list" ref={listBodyRef}>
         {terraces.slice(0, 500).map((terrace, index) => (
           <div
             key={index}
@@ -106,9 +146,6 @@ function TerraceList({ terraces, onTerraceClick, selectedTerrace, loading, loadi
               {terrace.address} {terrace.arrondissement}
             </div>
             <div className="terrace-meta">
-              <span className="tag">
-                {terrace.longueur}×{terrace.largeur}m
-              </span>
               <span className={`sun-badge ${terrace.sunClass}`}>
                 {terrace.sunLabel}
               </span>

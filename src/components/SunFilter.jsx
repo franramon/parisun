@@ -2,7 +2,7 @@ import './SunFilter.css';
 
 const FILTER_OPTIONS = [
   { class: 'sunny', label: 'Ensoleillé', icon: '☀️' },
-  { class: 'shaded', label: 'Ombragé', icon: '🌑' }
+  { class: 'shaded', label: 'Ombragé', icon: '⛱️' }
 ];
 
 function SunFilter({ activeFilters, onChange, terraceCounts, compact = false }) {
