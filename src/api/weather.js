@@ -12,7 +12,7 @@ const PARIS_LNG = 2.3522;
 export async function fetchWeatherForecast() {
   try {
     // Forecast covers today -2 days to +7 days
-    const url = `${FORECAST_API_URL}?latitude=${PARIS_LAT}&longitude=${PARIS_LNG}&hourly=temperature_2m,weather_code,cloud_cover&timezone=Europe/Paris&forecast_days=7&past_days=2`;
+    const url = `${FORECAST_API_URL}?latitude=${PARIS_LAT}&longitude=${PARIS_LNG}&hourly=temperature_2m,weather_code,cloud_cover&daily=temperature_2m_min,temperature_2m_max&timezone=Europe/Paris&forecast_days=7&past_days=2`;
 
     const response = await fetch(url);
 
@@ -37,7 +37,7 @@ export async function fetchWeatherForecast() {
  */
 export async function fetchArchiveWeather(dateStr) {
   try {
-    const url = `${ARCHIVE_API_URL}?latitude=${PARIS_LAT}&longitude=${PARIS_LNG}&hourly=temperature_2m,weather_code,cloud_cover&timezone=Europe/Paris&start_date=${dateStr}&end_date=${dateStr}`;
+    const url = `${ARCHIVE_API_URL}?latitude=${PARIS_LAT}&longitude=${PARIS_LNG}&hourly=temperature_2m,weather_code,cloud_cover&daily=temperature_2m_min,temperature_2m_max&timezone=Europe/Paris&start_date=${dateStr}&end_date=${dateStr}`;
 
     const response = await fetch(url);
     if (!response.ok) throw new Error(`Archive API failed: ${response.status}`);
@@ -71,6 +71,16 @@ export function getWeatherForTime(weatherData, dateStr, hour) {
   const weatherCode = weatherData.hourly.weather_code[index];
   const cloudCover = weatherData.hourly.cloud_cover[index];
 
+  let tempMin = null;
+  let tempMax = null;
+  if (weatherData.daily?.time) {
+    const dayIndex = weatherData.daily.time.findIndex(t => t === dateStr);
+    if (dayIndex !== -1) {
+      tempMin = weatherData.daily.temperature_2m_min?.[dayIndex] ?? null;
+      tempMax = weatherData.daily.temperature_2m_max?.[dayIndex] ?? null;
+    }
+  }
+
   const weatherInfo = getWeatherInfo(weatherCode);
 
   // Calculate weather factor for sun score
@@ -85,6 +95,8 @@ export function getWeatherForTime(weatherData, dateStr, hour) {
 
   return {
     temperature,
+    tempMin,
+    tempMax,
     weatherCode,
     cloudCover,
     icon: weatherInfo.icon,

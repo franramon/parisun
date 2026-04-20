@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { Capacitor } from '@capacitor/core';
 import Header from './components/Header';
 import Map from './components/Map';
 import TerraceList from './components/TerraceList';
@@ -171,7 +172,12 @@ function App() {
             temperature_2m: [...prev.hourly.temperature_2m, ...archiveData.hourly.temperature_2m],
             weather_code: [...prev.hourly.weather_code, ...archiveData.hourly.weather_code],
             cloud_cover: [...prev.hourly.cloud_cover, ...archiveData.hourly.cloud_cover],
-          }
+          },
+          daily: archiveData.daily ? {
+            time: [...(prev.daily?.time ?? []), ...archiveData.daily.time],
+            temperature_2m_min: [...(prev.daily?.temperature_2m_min ?? []), ...archiveData.daily.temperature_2m_min],
+            temperature_2m_max: [...(prev.daily?.temperature_2m_max ?? []), ...archiveData.daily.temperature_2m_max],
+          } : prev.daily
         };
       });
     });
@@ -265,8 +271,10 @@ function App() {
     setTerracesInView(inView);
   }, [filteredTerraces]);
 
+  const isNative = Capacitor.isNativePlatform();
+
   return (
-    <div className="app">
+    <div className={`app${isNative ? ' native-app' : ''}`}>
       <Header
         selectedDate={selectedDate}
         onDateChange={setSelectedDate}
@@ -278,6 +286,8 @@ function App() {
         sunFilters={sunFilters}
         onFiltersChange={setSunFilters}
         terraceCounts={terraceCounts}
+        suggestions={terracesWithScores}
+        onSuggestionSelect={(t) => { setSelectedTerrace(t); setListOpen(false); }}
       />
 
       <main className="main">
@@ -336,19 +346,18 @@ function App() {
 
       </main>
 
-      {/* Mobile FAB + filter — hidden when list is open */}
+      {/* Mobile unified action bar — hidden when list is open */}
       {!listOpen && (
-        <div className="mobile-bottom-bar">
-          <div className="mobile-filter-wrap">
-            <SunFilter
-              activeFilters={sunFilters}
-              onChange={setSunFilters}
-              terraceCounts={terraceCounts}
-              compact={true}
-            />
-          </div>
+        <div className="mobile-action-bar">
+          <SunFilter
+            activeFilters={sunFilters}
+            onChange={setSunFilters}
+            terraceCounts={terraceCounts}
+            compact={true}
+          />
+          <div className="action-bar-divider" aria-hidden="true" />
           <button
-            className="fab-list"
+            className="action-list-btn"
             onClick={() => setListOpen(true)}
             aria-label="Afficher la liste"
           >
