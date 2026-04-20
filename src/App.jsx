@@ -271,7 +271,11 @@ function App() {
     setTerracesInView(inView);
   }, [filteredTerraces]);
 
-  const isNative = Capacitor.isNativePlatform();
+  const isNative =
+    Capacitor.isNativePlatform() ||
+    (typeof window !== 'undefined' &&
+      (window.matchMedia('(display-mode: standalone)').matches ||
+        window.navigator.standalone === true));
 
   return (
     <div className={`app${isNative ? ' native-app' : ''}`}>

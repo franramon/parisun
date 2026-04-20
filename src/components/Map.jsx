@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { getShopLabel } from '../utils/nafLabels';
+import { getShopLabel, getShopIcon } from '../utils/nafLabels';
 import './Map.css';
 
 const MAX_MARKERS = 500;
@@ -81,12 +81,20 @@ function Map({ terraces, onTerraceClick, selectedTerrace, onBoundsChange, isNigh
         icon: icons[terrace.sunClass] || icons.default
       })
         .bindPopup(
-          `<div class="popup-name">${escapeHtml(terrace.name)}</div>
-           <div class="popup-addr">${escapeHtml(terrace.address)} ${escapeHtml(terrace.arrondissement)}</div>
-           <div class="popup-footer">
-             <span class="popup-shop">${escapeHtml(getShopLabel(terrace.naf))}</span>
-             <span class="popup-sun ${terrace.sunClass}">${escapeHtml(terrace.sunLabel)}</span>
-           </div>`
+          `<div class="popup-card">
+             <div class="popup-header">
+               <div class="popup-status-icon ${terrace.sunClass}">${getShopIcon(terrace.naf)}</div>
+               <div class="popup-title">
+                 <div class="popup-name">${escapeHtml(terrace.name)}</div>
+                 <div class="popup-addr">${escapeHtml(terrace.address)}, ${escapeHtml(terrace.arrondissement)}</div>
+               </div>
+             </div>
+             <div class="popup-footer">
+               <span class="popup-shop">${escapeHtml(getShopLabel(terrace.naf))}</span>
+               <span class="popup-sun ${terrace.sunClass}">${escapeHtml(terrace.sunLabel)}</span>
+             </div>
+           </div>`,
+          { closeButton: true, autoPan: true, className: 'popup-2026' }
         )
         .addTo(map);
 
